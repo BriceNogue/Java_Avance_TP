@@ -14,13 +14,13 @@ public class Person {
     private Integer Id;
 
     @Column(name = "age")
-    private Integer Age;
+    private Integer age;
 
     @Column(name = "firstname", length = 50)
-    private String Firstname;
+    private String firstname;
 
     @Column(name = "lastname", length = 50)
-    private String Lastname;
+    private String lastname;
 
     @ManyToMany
     @JoinTable(name = "person_animals",
@@ -39,27 +39,27 @@ public class Person {
     }
 
     public Integer getAge() {
-        return Age;
+        return age;
     }
 
     public void setAge(Integer age) {
-        Age = age;
+        this.age = age;
     }
 
     public String getFirstname() {
-        return Firstname;
+        return firstname;
     }
 
     public void setFirstname(String firstname) {
-        Firstname = firstname;
+        this.firstname = firstname;
     }
 
     public String getLastname() {
-        return Lastname;
+        return lastname;
     }
 
     public void setLastname(String lastname) {
-        Lastname = lastname;
+        this.lastname = lastname;
     }
 
     public List<Animal> getAnimals() {

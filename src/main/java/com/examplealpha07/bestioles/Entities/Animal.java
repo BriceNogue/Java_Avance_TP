@@ -2,67 +2,64 @@ package com.examplealpha07.bestioles.Entities;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 @Table(name = "animal")
 public class Animal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer Id;
+    private Integer id;
 
     @Column(name = "color", length = 50)
-    private String Color;
+    private String color;
 
     @Column(name = "name", length = 50)
-    private String Name;
+    private String name;
 
     @Column(name = "sex", length = 250)
-    private String Sex;
+    private String sex;
 
     @ManyToOne
-    private Species Species;
+    private Species species;
 
     public Animal() {}
 
     public Integer getId() {
-        return Id;
+        return id;
     }
 
     public void setId(Integer id) {
-        Id = id;
+        this.id = id;
     }
 
     public String getColor() {
-        return Color;
+        return color;
     }
 
     public void setColor(String color) {
-        Color = color;
+        this.color = color;
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        Name = name;
+        this.name = name;
     }
 
     public String getSex() {
-        return Sex;
+        return sex;
     }
 
     public void setSex(String sex) {
-        Sex = sex;
+        this.sex = sex;
     }
 
     public com.examplealpha07.bestioles.Entities.Species getSpecies() {
-        return Species;
+        return species;
     }
 
     public void setSpecies(com.examplealpha07.bestioles.Entities.Species species) {
-        Species = species;
+        this.species = species;
     }
 }

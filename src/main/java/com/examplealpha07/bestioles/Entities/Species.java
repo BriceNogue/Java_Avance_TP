@@ -2,46 +2,43 @@ package com.examplealpha07.bestioles.Entities;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 @Table(name = "Species")
 public class Species {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer Id;
+    private Integer id;
 
     @Column(name = "common_name", length = 50, nullable = false)
-    private String CommonName;
+    private String commonName;
 
     @Column(name = "latin_name", length = 200, nullable = false)
-    private String LatinName;
+    private String latinName;
 
     public Species() {}
 
     public Integer getId() {
-        return Id;
+        return id;
     }
 
     public void setId(Integer id) {
-        Id = id;
+        this.id = id;
     }
 
     public String getCommonName() {
-        return CommonName;
+        return commonName;
     }
 
     public void setCommonName(String commonName) {
-        CommonName = commonName;
+        this.commonName = commonName;
     }
 
     public String getLatinName() {
-        return LatinName;
+        return latinName;
     }
 
     public void setLatinName(String latinName) {
-        LatinName = latinName;
+        this.latinName = latinName;
     }
 }
