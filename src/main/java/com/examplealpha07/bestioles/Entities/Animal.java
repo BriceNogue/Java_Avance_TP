@@ -19,6 +19,7 @@ public class Animal {
     private String sex;
 
     @ManyToOne
+    @JoinColumn(name = "species_id", insertable = true, updatable = false)
     private Species species;
 
     public Animal() {}

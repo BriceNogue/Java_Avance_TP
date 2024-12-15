@@ -12,6 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.Optional;
 
+// Commponent scanning
 @SpringBootApplication
 public class BestiolesApplication implements CommandLineRunner {
 
