@@ -20,4 +20,7 @@ public interface IPersonService {
     public boolean deletePerson(int id);
 
     public Page<Person> findAllAndPageable(Pageable pageable);
+
+//    public void deletePersonsWithoutAnimals();
+//    public void generateEntities(int nbr);
 }

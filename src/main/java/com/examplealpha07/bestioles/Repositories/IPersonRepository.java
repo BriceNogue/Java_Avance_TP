@@ -1,15 +1,13 @@
 package com.examplealpha07.bestioles.Repositories;
 
-import com.examplealpha07.bestioles.Entities.Animal;
 import com.examplealpha07.bestioles.Entities.Person;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-import java.util.Optional;
 
-public interface IPersonRepository extends JpaRepository<Person, Integer> {
+public interface IPersonRepository extends JpaRepository<Person, Integer>, PersonRepositoryCustom {
     public List<Person> findByLastnameOrFirstname(String lastname, String firstname);
     public List<Person> findByAgeGreaterThanEqual(int age);
 

@@ -5,6 +5,7 @@ import com.examplealpha07.bestioles.Entities.Species;
 import com.examplealpha07.bestioles.Repositories.IAnimalRepository;
 import com.examplealpha07.bestioles.Repositories.IPersonRepository;
 import com.examplealpha07.bestioles.Repositories.ISpeciesRepository;
+import com.examplealpha07.bestioles.Services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -17,13 +18,15 @@ import java.util.Optional;
 public class BestiolesApplication implements CommandLineRunner {
 
     @Autowired
-    public IPersonRepository personRepository;
+    public IPersonRepository IPersonRepository;
 
     @Autowired
     public IAnimalRepository animalRepository;
 
     @Autowired
     public ISpeciesRepository speciesRepository;
+    @Autowired
+    private PersonService personService;
 
     public static void main(String[] args) {
         SpringApplication.run(BestiolesApplication.class, args);
@@ -31,7 +34,7 @@ public class BestiolesApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        personRepository.findAll().forEach(person -> {
+        IPersonRepository.findAll().forEach(person -> {
             System.out.println("Firstname : " + person.getFirstname());
         });
 
@@ -54,12 +57,12 @@ public class BestiolesApplication implements CommandLineRunner {
         });
 
         System.out.println("Persons : TP4");
-        personRepository.findByLastnameOrFirstname("Nero", "Paul").forEach(person -> {
+        IPersonRepository.findByLastnameOrFirstname("Nero", "Paul").forEach(person -> {
             System.out.println("Full name : " + person.getLastname() + " " + person.getFirstname());
         });
 
         System.out.println("Person age >= : ");
-        personRepository.findByAgeGreaterThanEqual(23).forEach(person -> {
+        IPersonRepository.findByAgeGreaterThanEqual(23).forEach(person -> {
             System.out.println("Firstname : " + person.getFirstname() + "; Age : " + person.getAge());
         });
 
@@ -91,13 +94,13 @@ public class BestiolesApplication implements CommandLineRunner {
 
         System.out.println("Person : TP5");
         System.out.println("Person Age [MIN , MAX]");
-        personRepository.findByAgeBetweenMIN_MAX(22, 60).forEach(person -> {
+        IPersonRepository.findByAgeBetweenMIN_MAX(22, 60).forEach(person -> {
             System.out.println("Firstname : " + person.getFirstname() + "; Age : " + person.getAge());
         });
 
         System.out.println("Person Animals :");
         Optional<Animal> animal = animalRepository.findById(1);
-        personRepository.findByAnimals(animal.get().getId()).forEach(person -> {
+        IPersonRepository.findByAnimals(animal.get().getId()).forEach(person -> {
             System.out.println("Firstname : " + person.getFirstname() + "; Animal : " + animal.get().getName());
         });
 
@@ -109,6 +112,17 @@ public class BestiolesApplication implements CommandLineRunner {
         System.out.println("Animals belongs");
         boolean isBelongs = animalRepository.existsById(8);
         System.out.println("Belongs : " + isBelongs);
-        // EnRegion TP5
+
+        // EndRegion TP5
+
+        // Region TP6
+
+        System.out.println("Person : TP6");
+        System.out.println("Generat random person :");
+        personService.generateRandomPersons(0);// 2
+
+        System.out.println("Delete person without animal :");
+        personService.deleteOrphanPersons();
+        // EndRegion TP6
     }
 }

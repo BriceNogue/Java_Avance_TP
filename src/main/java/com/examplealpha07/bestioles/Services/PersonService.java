@@ -3,52 +3,53 @@ package com.examplealpha07.bestioles.Services;
 import com.examplealpha07.bestioles.Contracts.IPersonService;
 import com.examplealpha07.bestioles.Entities.Person;
 import com.examplealpha07.bestioles.Repositories.IPersonRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+//import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
 public class PersonService implements IPersonService {
 
-    private final IPersonRepository personRepository;
+    private final IPersonRepository IPersonRepository;
 
     @Autowired
-    public PersonService(IPersonRepository personRepository) {
-        this.personRepository = personRepository;
+    public PersonService(IPersonRepository IPersonRepository) {
+        this.IPersonRepository = IPersonRepository;
     }
 
     @Override
     public List<Person> findByLastnameOrFirstname(String lastname, String firstname) {
-        return personRepository.findByLastnameOrFirstname(lastname, firstname);
+        return IPersonRepository.findByLastnameOrFirstname(lastname, firstname);
     }
 
     @Override
     public List<Person> findByAgeGreaterThanEqual(int age) {
-        return personRepository.findByAgeGreaterThanEqual(age);
+        return IPersonRepository.findByAgeGreaterThanEqual(age);
     }
 
     @Override
     public List<Person> findByAgeBetweenMIN_MAX(int ageMin, int ageMax) {
-        return personRepository.findByAgeBetweenMIN_MAX(ageMin, ageMax);
+        return IPersonRepository.findByAgeBetweenMIN_MAX(ageMin, ageMax);
     }
 
     @Override
     public List<Person> findByAnimals(int animal_id) {
-        return personRepository.findByAnimals(animal_id);
+        return IPersonRepository.findByAnimals(animal_id);
     }
 
     @Override
     public Person getPersonById(int id) {
-        return personRepository.findById(id).orElse(null);
+        return IPersonRepository.findById(id).orElse(null);
     }
 
     @Override
     public List<Person> getAllPersons() {
-        return personRepository.findAll();
+        return IPersonRepository.findAll();
     }
 
     @Override
@@ -61,7 +62,7 @@ public class PersonService implements IPersonService {
             person.setAge(newPerson.getAge());
             person.setAnimals(newPerson.getAnimals());
 
-            return personRepository.save(person);
+            return IPersonRepository.save(person);
         }else {
             return null;
         }
@@ -78,7 +79,7 @@ public class PersonService implements IPersonService {
             person.setAge(updatedPerson.getAge());
             person.setAnimals(updatedPerson.getAnimals());
 
-            return personRepository.save(person);
+            return IPersonRepository.save(person);
         }else {
             return null;
         }
@@ -87,8 +88,8 @@ public class PersonService implements IPersonService {
     @Override
     public boolean deletePerson(int id) {
         if (id > 0) {
-            personRepository.deleteById(id);
-            return !personRepository.existsById(id);
+            IPersonRepository.deleteById(id);
+            return !IPersonRepository.existsById(id);
         }else {
             return false;
         }
@@ -97,6 +98,16 @@ public class PersonService implements IPersonService {
     // Renvoie un résultat paginé
     @Override
     public Page<Person> findAllAndPageable(Pageable pageable) {
-        return personRepository.findAll(pageable);
+        return IPersonRepository.findAll(pageable);
+    }
+
+    @Transactional
+    public void deleteOrphanPersons() {
+        IPersonRepository.deletePersonsWithoutAnimals();
+    }
+
+    @Transactional
+    public void generateRandomPersons(int nbr) {
+        IPersonRepository.generateEntities(nbr);
     }
 }
