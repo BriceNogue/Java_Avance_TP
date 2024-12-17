@@ -4,6 +4,9 @@ import com.examplealpha07.bestioles.Contracts.IPersonService;
 import com.examplealpha07.bestioles.Entities.Person;
 import com.examplealpha07.bestioles.Repositories.IPersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -89,5 +92,11 @@ public class PersonService implements IPersonService {
         }else {
             return false;
         }
+    }
+
+    // Renvoie un résultat paginé
+    @Override
+    public Page<Person> findAllAndPageable(Pageable pageable) {
+        return personRepository.findAll(pageable);
     }
 }

@@ -55,15 +55,18 @@ public class AnimalService implements IAnimalService {
     }
 
     @Override
-    public Animal updateAnimal(Animal animalToUpdate) {
+    public Animal updateAnimal(AnimalDTO animalToUpdate) {
         try {
+
+            Species species = speciesRepository.findById(animalToUpdate.getSpeciesId())
+                    .orElseThrow(() -> new RuntimeException("Species not found!"));
 
             Animal animal = new Animal();
             animal.setId(animalToUpdate.getId());
             animal.setName(animalToUpdate.getName());
             animal.setColor(animalToUpdate.getColor());
             animal.setSex(animalToUpdate.getSex());
-            animal.setSpecies(animalToUpdate.getSpecies());
+            animal.setSpecies(species);
 
             return animalRepository.save(animal);
 

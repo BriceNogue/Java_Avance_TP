@@ -1,8 +1,12 @@
 package com.examplealpha07.bestioles.Controllers;
 
 import com.examplealpha07.bestioles.Contracts.IPersonService;
+import com.examplealpha07.bestioles.DTO.ResponseDTO;
 import com.examplealpha07.bestioles.Entities.Person;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -68,6 +72,19 @@ public class PersonController {
         }else {
             response = "Person not found!";
         }
+
+        return response;
+    }
+
+    @GetMapping("/all/")
+    public ResponseDTO.GeneralResponse getAllPersons(@RequestParam int page) {
+        if(page < 0){
+            return null;
+        }
+
+        Pageable pageable = PageRequest.of(page, 10);
+
+        ResponseDTO.GeneralResponse response = new ResponseDTO.GeneralResponse<Page<Person>>(true, "OK", personService.findAllAndPageable(pageable));
 
         return response;
     }

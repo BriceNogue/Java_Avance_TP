@@ -1,6 +1,8 @@
 package com.examplealpha07.bestioles.Contracts;
 
 import com.examplealpha07.bestioles.Entities.Person;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
@@ -16,4 +18,6 @@ public interface IPersonService {
     public Person createPerson(Person person);
     public Person updatePerson(Person person);
     public boolean deletePerson(int id);
+
+    public Page<Person> findAllAndPageable(Pageable pageable);
 }

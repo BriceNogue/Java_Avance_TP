@@ -9,6 +9,6 @@ public interface IAnimalService {
     public Animal getAnimalById(int id);
     public List<Animal> getAllAnimals();
     public Animal createAnimal(AnimalDTO animal);
-    public Animal updateAnimal(Animal animal);
+    public Animal updateAnimal(AnimalDTO animal);
     public boolean deleteAnimal(int id);
 }

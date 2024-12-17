@@ -37,4 +37,36 @@ public class AnimalController {
 
         return response;
     }
+
+    @PutMapping("/update/{id}")
+    public String updateAnimal(@PathVariable("(id)") int id, @RequestBody AnimalDTO animalToUpdate) {
+        if (id != animalToUpdate.getId() || id <= 0) {
+            return "Error updating animal : incorrect id.";
+        }
+
+        Animal animal = animalService.updateAnimal(animalToUpdate);
+
+        String response = animal != null ? animal.getName() + " updated successfully." : "Error updating animal!";
+
+        return response;
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public String deleteAnimal(@PathVariable("id") int id) {
+        String response = "";
+
+        if (id <= 0){
+            return "Invalid animal id!";
+        }
+
+        Animal animal = animalService.getAnimalById(id);
+
+        if (animal == null){
+            response = "Animal not found!";
+        }else {
+            response = animalService.deleteAnimal(id) ? "Animal deleted successfully." : "Error deleting animal!";
+        }
+
+        return response;
+    }
 }
