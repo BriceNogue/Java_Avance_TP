@@ -1,7 +1,7 @@
 package com.examplealpha07.bestioles.Services;
 
 import com.examplealpha07.bestioles.Contracts.IAnimalService;
-import com.examplealpha07.bestioles.DTO.AnimalDTO;
+import com.examplealpha07.bestioles.DTO.AnimalDto;
 import com.examplealpha07.bestioles.Entities.Animal;
 import com.examplealpha07.bestioles.Entities.Species;
 import com.examplealpha07.bestioles.Repositories.IAnimalRepository;
@@ -34,7 +34,7 @@ public class AnimalService implements IAnimalService {
     }
 
     @Override
-    public Animal createAnimal(AnimalDTO newAnimal) {
+    public Animal createAnimal(AnimalDto newAnimal) {
         try {
             Species species = speciesRepository.findById(newAnimal.getSpeciesId())
                     .orElseThrow(() -> new RuntimeException("Species not found!"));
@@ -55,7 +55,7 @@ public class AnimalService implements IAnimalService {
     }
 
     @Override
-    public Animal updateAnimal(AnimalDTO animalToUpdate) {
+    public Animal updateAnimal(AnimalDto animalToUpdate) {
         try {
 
             Species species = speciesRepository.findById(animalToUpdate.getSpeciesId())

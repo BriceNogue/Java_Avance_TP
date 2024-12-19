@@ -2,6 +2,7 @@ package com.examplealpha07.bestioles.Controllers;
 
 import com.examplealpha07.bestioles.Common.CustomExceptions.EntityNotFoundException;
 import com.examplealpha07.bestioles.Contracts.IPersonService;
+import com.examplealpha07.bestioles.DTO.PersonDto;
 import com.examplealpha07.bestioles.DTO.ResponseDTO;
 import com.examplealpha07.bestioles.Entities.Person;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class PersonController {
     }
 
     @GetMapping("/all")
-    public List<Person> getAllPersons() {
+    public List<PersonDto> getAllPersons() {
         return personService.getAllPersons();
     }
 
@@ -67,8 +68,8 @@ public class PersonController {
     }
 
     @GetMapping("/all/page")
-    public Page<Person> getAllPersons(@RequestParam(value = "pageNum", defaultValue = "0") int pageNum,
-                                      @RequestParam(value = "pageSize", defaultValue = "5") int pageSize) {
+    public Page<PersonDto> getAllPersons(@RequestParam(value = "pageNum", defaultValue = "0") int pageNum,
+                                         @RequestParam(value = "pageSize", defaultValue = "5") int pageSize) {
         if(pageNum < 0 || pageSize < 0){
             return null;
         }

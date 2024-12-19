@@ -4,6 +4,8 @@ import com.examplealpha07.bestioles.Common.CustomExceptions.EntityToCreateHasAnI
 import com.examplealpha07.bestioles.Common.CustomExceptions.EntityNotFoundException;
 import com.examplealpha07.bestioles.Common.CustomExceptions.EntityToUpdateHasNoIdException;
 import com.examplealpha07.bestioles.Contracts.IPersonService;
+import com.examplealpha07.bestioles.DTO.Mappers.PersonDtoMapper;
+import com.examplealpha07.bestioles.DTO.PersonDto;
 import com.examplealpha07.bestioles.DTO.ResponseDTO;
 import com.examplealpha07.bestioles.Entities.Person;
 import com.examplealpha07.bestioles.Repositories.IPersonRepository;
@@ -16,15 +18,18 @@ import org.springframework.stereotype.Service;
 
 //import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PersonService implements IPersonService {
 
     private final IPersonRepository IPersonRepository;
+    private final PersonDtoMapper personDtoMapper;
 
     @Autowired
-    public PersonService(IPersonRepository IPersonRepository) {
+    public PersonService(IPersonRepository IPersonRepository, PersonDtoMapper personDtoMapper) {
         this.IPersonRepository = IPersonRepository;
+        this.personDtoMapper = personDtoMapper;
     }
 
     @Override
@@ -57,8 +62,9 @@ public class PersonService implements IPersonService {
     }
 
     @Override
-    public List<Person> getAllPersons() {
-        return IPersonRepository.findAll();
+    public List<PersonDto> getAllPersons() {
+        List<Person> persons = IPersonRepository.findAll();
+        return persons.stream().map(personDtoMapper::toDto).collect(Collectors.toList());
     }
 
     @Override
@@ -136,9 +142,10 @@ public class PersonService implements IPersonService {
 
     // Renvoie un résultat paginé
     @Override
-    public Page<Person> findAllAndPageable(int pageNum, int pageSize) {
+    public Page<PersonDto> findAllAndPageable(int pageNum, int pageSize) {
         Pageable pageable = PageRequest.of(pageNum, pageSize);
-        return IPersonRepository.findAll(pageable);
+        Page<Person> persons = IPersonRepository.findAll(pageable);
+        return persons.map((person) -> personDtoMapper.toDto(person));
     }
 
     @Transactional

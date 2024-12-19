@@ -1,15 +1,13 @@
 package com.examplealpha07.bestioles.DTO;
 
-import com.examplealpha07.bestioles.Entities.Species;
-
-public class AnimalDTO {
+public class AnimalDto {
     private Integer id;
     private String color;
     private String name;
     private String sex;
     private Integer speciesId;
 
-    public AnimalDTO() {}
+    public AnimalDto() {}
 
     public Integer getId() {
         return id;

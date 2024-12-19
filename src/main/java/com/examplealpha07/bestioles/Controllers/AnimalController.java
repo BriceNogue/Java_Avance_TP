@@ -1,7 +1,7 @@
 package com.examplealpha07.bestioles.Controllers;
 
 import com.examplealpha07.bestioles.Contracts.IAnimalService;
-import com.examplealpha07.bestioles.DTO.AnimalDTO;
+import com.examplealpha07.bestioles.DTO.AnimalDto;
 import com.examplealpha07.bestioles.Entities.Animal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +30,7 @@ public class AnimalController {
     }
 
     @PostMapping("/create")
-    public String createAnimal(@RequestBody AnimalDTO newAnimal) {
+    public String createAnimal(@RequestBody AnimalDto newAnimal) {
         Animal animal = animalService.createAnimal(newAnimal);
 
         String response = animal != null ? animal.getName() + " created successfully." : "Error creating new animal!";
@@ -39,7 +39,7 @@ public class AnimalController {
     }
 
     @PutMapping("/update/{id}")
-    public String updateAnimal(@PathVariable("(id)") int id, @RequestBody AnimalDTO animalToUpdate) {
+    public String updateAnimal(@PathVariable("(id)") int id, @RequestBody AnimalDto animalToUpdate) {
         if (id != animalToUpdate.getId() || id <= 0) {
             return "Error updating animal : incorrect id.";
         }
