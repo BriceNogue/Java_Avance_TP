@@ -122,7 +122,7 @@ public class BestiolesApplication implements CommandLineRunner {
         personService.generateRandomPersons(0);// 2
 
         System.out.println("Delete person without animal :");
-        personService.deleteOrphanPersons();
+        //personService.deleteOrphanPersons();
         // EndRegion TP6
     }
 }

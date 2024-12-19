@@ -1,5 +1,6 @@
 package com.examplealpha07.bestioles.Contracts;
 
+import com.examplealpha07.bestioles.DTO.ResponseDTO;
 import com.examplealpha07.bestioles.Entities.Person;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,9 +18,9 @@ public interface IPersonService {
     public List<Person> getAllPersons();
     public Person createPerson(Person person);
     public Person updatePerson(Person person);
-    public boolean deletePerson(int id);
+    public ResponseDTO.GeneralResponse deletePerson(int id);
 
-    public Page<Person> findAllAndPageable(Pageable pageable);
+    public Page<Person> findAllAndPageable(int pageNum, int pageSize);
 
 //    public void deletePersonsWithoutAnimals();
 //    public void generateEntities(int nbr);

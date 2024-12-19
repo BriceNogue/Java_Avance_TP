@@ -1,11 +1,16 @@
 package com.examplealpha07.bestioles.Services;
 
+import com.examplealpha07.bestioles.Common.CustomExceptions.EntityToCreateHasAnIdException;
+import com.examplealpha07.bestioles.Common.CustomExceptions.EntityNotFoundException;
+import com.examplealpha07.bestioles.Common.CustomExceptions.EntityToUpdateHasNoIdException;
 import com.examplealpha07.bestioles.Contracts.IPersonService;
+import com.examplealpha07.bestioles.DTO.ResponseDTO;
 import com.examplealpha07.bestioles.Entities.Person;
 import com.examplealpha07.bestioles.Repositories.IPersonRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +49,11 @@ public class PersonService implements IPersonService {
 
     @Override
     public Person getPersonById(int id) {
-        return IPersonRepository.findById(id).orElse(null);
+        Person person = IPersonRepository.findById(id).orElse(null);
+        if (person == null) {
+            throw new EntityNotFoundException();
+        }
+        return person;
     }
 
     @Override
@@ -54,50 +63,81 @@ public class PersonService implements IPersonService {
 
     @Override
     public Person createPerson(Person newPerson) {
-        if (newPerson != null) {
+        try{
+            if (newPerson.getId() == null || newPerson.getId() == 0) {
 
-            Person person = new Person();
-            person.setFirstname(newPerson.getFirstname());
-            person.setLastname(newPerson.getLastname());
-            person.setAge(newPerson.getAge());
-            person.setAnimals(newPerson.getAnimals());
+                Person person = new Person();
+                person.setFirstname(newPerson.getFirstname());
+                person.setLastname(newPerson.getLastname());
+                person.setAge(newPerson.getAge());
+                person.setAnimals(newPerson.getAnimals());
 
-            return IPersonRepository.save(person);
-        }else {
-            return null;
+                return IPersonRepository.save(person);
+            }else {
+                throw new EntityToCreateHasAnIdException();
+            }
+        }catch (EntityToCreateHasAnIdException e){
+            System.out.println("Error : "+ e.getMessage());
+            throw new EntityToCreateHasAnIdException();
         }
     }
 
     @Override
     public Person updatePerson(Person updatedPerson) {
-        if (updatedPerson != null) {
+        try{
+            if (updatedPerson.getId() != null && updatedPerson.getId() > 0) {
 
-            Person person = new Person();
-            person.setId(updatedPerson.getId());
-            person.setFirstname(updatedPerson.getFirstname());
-            person.setLastname(updatedPerson.getLastname());
-            person.setAge(updatedPerson.getAge());
-            person.setAnimals(updatedPerson.getAnimals());
+                Person person = new Person();
+                person.setId(updatedPerson.getId());
+                person.setFirstname(updatedPerson.getFirstname());
+                person.setLastname(updatedPerson.getLastname());
+                person.setAge(updatedPerson.getAge());
+                person.setAnimals(updatedPerson.getAnimals());
 
-            return IPersonRepository.save(person);
-        }else {
-            return null;
+                return IPersonRepository.save(person);
+            }else {
+                throw new EntityToUpdateHasNoIdException();
+            }
+        }
+        catch (EntityToUpdateHasNoIdException e){
+            System.out.println("Error : "+ e.getMessage());
+            throw new EntityToUpdateHasNoIdException();
         }
     }
 
     @Override
-    public boolean deletePerson(int id) {
-        if (id > 0) {
-            IPersonRepository.deleteById(id);
-            return !IPersonRepository.existsById(id);
-        }else {
-            return false;
+    public ResponseDTO.GeneralResponse deletePerson(int id) {
+        String responseMsg = "";
+        boolean flag = false;
+
+        try{
+            if(!IPersonRepository.existsById(id)){
+                throw new EntityNotFoundException();
+            }
+
+            Person person = this.getPersonById(id);
+            if (person != null) {
+                IPersonRepository.deleteById(id);
+                responseMsg = !IPersonRepository.existsById(id) ? person.getFirstname() + " deleted successfully." :
+                        "Error deleting " + person.getFirstname() + "!";
+                flag = IPersonRepository.existsById(id);
+            }else {
+                responseMsg = "Person not found!";
+                flag = false;
+            }
+
+            return new ResponseDTO.GeneralResponse<>(flag, responseMsg, null);
+
+        }catch (EntityNotFoundException e) {
+            //return new ResponseDTO.GeneralResponse<>(false, "Error deleting person!", null);
+            throw new EntityNotFoundException();
         }
     }
 
     // Renvoie un résultat paginé
     @Override
-    public Page<Person> findAllAndPageable(Pageable pageable) {
+    public Page<Person> findAllAndPageable(int pageNum, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNum, pageSize);
         return IPersonRepository.findAll(pageable);
     }
 

@@ -1,5 +1,6 @@
 package com.examplealpha07.bestioles.Controllers;
 
+import com.examplealpha07.bestioles.Common.CustomExceptions.EntityNotFoundException;
 import com.examplealpha07.bestioles.Contracts.IPersonService;
 import com.examplealpha07.bestioles.DTO.ResponseDTO;
 import com.examplealpha07.bestioles.Entities.Person;
@@ -56,36 +57,21 @@ public class PersonController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public String deletePerson(@PathVariable("id") int id) {
-
-        String response = "";
+    public ResponseDTO.GeneralResponse deletePerson(@PathVariable("id") int id) {
 
         if (id <= 0){
-            return "Invalid person id!";
+            return new ResponseDTO.GeneralResponse(false, "Invalid person id!", null);
         }
 
-        Person person = personService.getPersonById(id);
-
-        if (person != null) {
-            response = personService.deletePerson(id) ? person.getFirstname() + " deleted successfully." :
-                    "Error deleting " + person.getFirstname() + "!";
-        }else {
-            response = "Person not found!";
-        }
-
-        return response;
+        return personService.deletePerson(id);
     }
 
-    @GetMapping("/all/")
-    public ResponseDTO.GeneralResponse getAllPersons(@RequestParam int page) {
-        if(page < 0){
+    @GetMapping("/all/page")
+    public Page<Person> getAllPersons(@RequestParam(value = "pageNum", defaultValue = "0") int pageNum,
+                                      @RequestParam(value = "pageSize", defaultValue = "5") int pageSize) {
+        if(pageNum < 0 || pageSize < 0){
             return null;
         }
-
-        Pageable pageable = PageRequest.of(page, 10);
-
-        ResponseDTO.GeneralResponse response = new ResponseDTO.GeneralResponse<Page<Person>>(true, "OK", personService.findAllAndPageable(pageable));
-
-        return response;
+        return personService.findAllAndPageable(pageNum, pageSize);
     }
 }
