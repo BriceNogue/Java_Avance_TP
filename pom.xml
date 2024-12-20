@@ -81,6 +81,12 @@
             <artifactId>javax.transaction-api</artifactId>
             <version>1.3</version>
         </dependency>
+
+        <!-- Starter pour la securité -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
