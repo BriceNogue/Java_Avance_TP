@@ -22,11 +22,36 @@ public class Person {
     @Column(name = "lastname", length = 50)
     private String lastname;
 
+    @Column(name = "password", length = 250)
+    private String password;
+
+    @ManyToMany
+    @JoinTable(name = "person_authorities",
+            joinColumns = @JoinColumn(name = "person_id"),
+            inverseJoinColumns = @JoinColumn(name = "authority_id"))
+    private List<Authority> authorities =  new ArrayList<>();
+
     @ManyToMany
     @JoinTable(name = "person_animals",
             joinColumns = @JoinColumn(name = "person_id"),
             inverseJoinColumns = @JoinColumn(name = "animals_id"))
     private List<Animal> animals = new ArrayList<>();
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public List<Authority> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(List<Authority> authorities) {
+        this.authorities = authorities;
+    }
 
     public Person() {}
 

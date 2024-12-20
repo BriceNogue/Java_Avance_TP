@@ -3,8 +3,17 @@ package com.examplealpha07.bestioles.DTO;
 public class PersonDto {
 
     private Integer Id;
+    private Integer age;
     private String firstname;
     private String lastname;
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
 
     public PersonDto() {}
 
